@@ -1,0 +1,60 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/home/oglocgreen/Desktop/gijon/Demo_Gijon/main/Motor_test/include",
+                "/home/oglocgreen/Desktop/gijon/Demo_Gijon/main/Motor_test/src",
+                "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/home/oglocgreen/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/home/oglocgreen/.platformio/packages/framework-arduino-avr/variants/micro",
+                "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/oglocgreen/Desktop/gijon/Demo_Gijon/main/Motor_test/include",
+                    "/home/oglocgreen/Desktop/gijon/Demo_Gijon/main/Motor_test/src",
+                    "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/home/oglocgreen/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/home/oglocgreen/.platformio/packages/framework-arduino-avr/variants/micro",
+                    "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/home/oglocgreen/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60000",
+                "ARDUINO_AVR_MICRO",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "USB_VID=0x2341",
+                "USB_PID=0x8037",
+                "USB_PRODUCT=\"Arduino Micro\"",
+                "USB_MANUFACTURER=\"Arduino\"",
+                "__AVR_ATmega32U4__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/home/oglocgreen/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega32u4",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
