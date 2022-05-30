@@ -34,8 +34,8 @@ void loop() {
 // micosecond to mescure the ofset von the a nad b channel to mesure the speed
 
 void SerialCommunication(int sensorValue, int channelA, int channelB, int speedValue){
-  Serial.println("sensorValue");
-  Serial.println(sensorValue);
+  //Serial.println("sensorValue");
+  //Serial.println(sensorValue);
 
   Serial.println("channelA");
   Serial.println(channelA);
@@ -43,8 +43,12 @@ void SerialCommunication(int sensorValue, int channelA, int channelB, int speedV
   Serial.println("channelB");
   Serial.println(channelB);
 
-  Serial.println("speedValue");
-  Serial.println(speedValue);
+  //Serial.println("speedValue");
+  //Serial.println(speedValue);
 }
+
+
+
+
 
 
