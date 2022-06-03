@@ -4,11 +4,24 @@
 void SerialCommunication(int sensorValue,int channelA, int channelB, int speedValue);
 
 // defines pins numbers
-#define pwm_pin 3
+#define pwm_pin_motor_output 3
+#define pwm_pin_speed_from_enocder 5
 
 // define variables
 int counter = 0;
-int angle = 0; 
+int angle = 0;
+int round_counter = 0;
+int last_round = 0;
+int last_5_counter = 0;
+int median = 0;
+
+int speedValue = 0;
+int sensorValue  = 0;
+int position = 0;
+
+
+int test  = 0;
+
 bool channelA = 0;
 bool channelB = 0;
 
@@ -23,18 +36,31 @@ void setup() {
   Serial.write("Setup");
 
   // Setup Pins
-  pinMode(pwm_pin, OUTPUT);
-  pinMode(A1,INPUT);
-  pinMode(A2,INPUT);
+  pinMode(pwm_pin_motor_output, OUTPUT);
+  pinMode(pwm_pin_speed_from_enocder, OUTPUT);
+
+  pinMode(A1,INPUT);  // channelA
+  pinMode(A2,INPUT);  // channelB
+  pinMode(A2,INPUT);  // Poti-Posit.
+  pinMode(A4,INPUT);  // Switch on/off motor
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
-  int speedValue = 0;
-  int sensorValue = analogRead(A0);
 
-  speedValue = map(sensorValue, 0, 1023, 0, 255);
-  analogWrite(pwm_pin, speedValue);
+  sensorValue = analogRead(A0);
+  test = analogRead(A4);
+  
+  position = analogRead(A3);
+  position = map(position, 0, 1023, 0, 360);
+
+  if(test >= 1000){
+    //Just a testswitch
+  }
+
+
+  speedValue = 110;
+  analogWrite(pwm_pin_motor_output, speedValue);
 
   // Decoder
   channelA = digitalRead(A1);
@@ -56,26 +82,58 @@ void loop() {
       if(angle <= 0){
         angle = 360;
       }
+
     }
-    if(counter >=30 || counter <= -30)
-    {
-      counter = 0;
-    } 
-    
-    Serial.println("Position: ");
-    Serial.print(int(angle));
-    Serial.println(" deg");
-
-
-    Serial.println("counter: ");
-    Serial.println(int(counter));
   }
-  aLastState = aState;
-            
 
+
+  if(position == 0 && last_round >= 10){
+    round_counter++;
+    Serial.println("****** ");
+    Serial.print("round_counter: ");
+    Serial.println(round_counter);
+    Serial.print("encoder_ounter: ");
+    Serial.println(counter);
+    Serial.println("****** ");
+  }
+
+  if (round_counter == 5 && last_round >= 10){
+    Serial.println("-----");
+    Serial.print("last_5_counter: ");
+    Serial.println(last_5_counter);
+    Serial.print("median: ");
+    Serial.println(median);
+    Serial.println("-----");
+    last_5_counter = counter;
+    median += counter;
+    median = median/2;
+    counter = 0;
+    round_counter = 0;
+    speedValue = 127;
+    analogWrite(pwm_pin_motor_output, speedValue);
+    delay(10000);
+    speedValue = 50;
+    analogWrite(pwm_pin_motor_output, speedValue);
+  }
+
+ /*
+  if(position >= 0 && position <= 5 && last_round >= 10){
+    speedValue = 127;
+    analogWrite(pwm_pin_motor_output, speedValue);
+    Serial.println("****** ");
+    Serial.println("counter: ");
+    Serial.println(counter);
+    Serial.println("****** ");
+    delay(10000);
+    counter = 0;
+   }
+
+  */
+  last_round = position;
+  //Serial.println(position);
+  aLastState = aState;
 
   //SerialCommunication(sensorValue, channelA, channelB, speedValue);
-  //delay(1000);
 }
 
 // micosecond to mescure the ofset von the a nad b channel to mesure the speed
