@@ -10,8 +10,9 @@ void B_Pin_Up();
 #define pin_channelA 2
 #define pin_channelB 3
 
+
 // define variables
-volatile int counter = 0;
+int counter = 0;
 int angle = 0;
 int round_counter = 0;
 int last_round = 0;
@@ -40,15 +41,15 @@ void setup() {
   // Setup Pins
   pinMode(pin_pwm__motor_output, OUTPUT);
 
-  pinMode(pin_channelA, INPUT);  // channelA
-  pinMode(pin_channelB, INPUT);  // channelB
-  //pinMode(pin_test, INPUT);
+  pinMode(pin_channelA,INPUT);  // channelA
+  pinMode(pin_channelB,INPUT);  // channelB
 
   attachInterrupt(digitalPinToInterrupt(pin_channelA), A_Pin_Up, RISING);
-  attachInterrupt(digitalPinToInterrupt(pin_channelB), B_Pin_Up, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pin_channelB), B_Pin_Up, RISING);
 
 
-  pinMode(A3,INPUT);  // Poti-Posit.
+
+  pinMode(A2,INPUT);  // Poti-Posit.
   //pinMode(A4,INPUT);  // Switch on/off motor
 }
 
@@ -61,7 +62,7 @@ void loop() {
   position = analogRead(A3);
   position = map(position, 0, 1023, 0, 360);
 
-  speedValue = 90;
+  speedValue = 50;
   analogWrite(pin_pwm__motor_output, speedValue);
 
  
@@ -119,9 +120,10 @@ void loop() {
   last_round = position;
   aLastState = aState;
 
-  Serial.println(counter);
+
   //SerialExecutionSpeed();
 }
+
 
 
 void SerialExecutionSpeed(){
@@ -134,13 +136,21 @@ void SerialExecutionSpeed(){
 
 
 void A_Pin_Up(){
-  Serial.println("A_Pin_Up +++");
-  counter++;
+  //Serial.print("A_Pin_Up");
+  a_up = true;
+  b_up = digitalRead(pin_channelB);
+  if(a_up && b_up){
+    counter++;
+  }
 }
 
 void B_Pin_Up(){
-  Serial.println("B_Pin_Up ---");
-  counter--;
+  //Serial.print("B_Pin_Up");
+  b_up = true;
+  a_up = digitalRead(pin_channelA);
+  if(a_up && b_up){
+    counter--;
+  }
 }
 
 
