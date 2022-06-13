@@ -2,35 +2,26 @@
 #include <Wire.h>
 
 void SerialExecutionSpeed();
-void A_Pin_Up();
-void B_Pin_Up();
-
+void CanalA();
+void CanalB();
+void SPrint();
 // defines pins numbers
 #define pin_pwm__motor_output 6
-#define pin_channelA 2
-#define pin_channelB 3
-
+#define PIN_D1 2 
+#define PIN_D2 3 
 
 // define variables
-int counter = 0;
+volatile int contador = 0;
+volatile bool A, B, Ao, Bo = false;
+
+int i = 0;
 int angle = 0;
-int round_counter = 0;
-int last_round = 0;
-int last_5_counter = 0;
-int median = 0;
 
-int speedValue = 0;
-int sensorValue  = 0;
-int position = 0;
+int speed_value = 0;
+int postion_value = 0;
 
-
-int test  = 0;
-bool aState = 0;
-bool aLastState = 0;
-
-bool a_up = false;
-bool b_up = false;
- 
+int tiempo2, tiempo2_old, tiempo2_new = 0;
+int vel_enc = 0;
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -40,90 +31,70 @@ void setup() {
 
   // Setup Pins
   pinMode(pin_pwm__motor_output, OUTPUT);
-
-  pinMode(pin_channelA,INPUT);  // channelA
-  pinMode(pin_channelB,INPUT);  // channelB
-
-  attachInterrupt(digitalPinToInterrupt(pin_channelA), A_Pin_Up, RISING);
-  attachInterrupt(digitalPinToInterrupt(pin_channelB), B_Pin_Up, RISING);
+  pinMode(A0,INPUT);   // Input Speed_Value
+  pinMode(A3,INPUT);  // Poti-Posit.
 
 
+  pinMode(PIN_D2, INPUT_PULLUP);  // channelA
+  pinMode(PIN_D1, INPUT_PULLUP);  // channelB
+  //pinMode(pin_test, INPUT);
 
-  pinMode(A2,INPUT);  // Poti-Posit.
+  A=digitalRead(PIN_D2);
+  B=digitalRead(PIN_D1);
+  Ao=A;
+  Bo=B;
+
+  attachInterrupt(digitalPinToInterrupt(PIN_D1), CanalB, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(PIN_D2), CanalA, CHANGE);
+
+
+
+
+
+
+  tiempo2_old = micros(); 
   //pinMode(A4,INPUT);  // Switch on/off motor
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
+  speed_value = analogRead(A0);
+  speed_value = map(speed_value, 0, 1023, 0, 254);
 
-  sensorValue = analogRead(A0);
-  speedValue = map(sensorValue, 0, 1023, 0, 254);
+  postion_value = analogRead(A3);
+  postion_value = map(postion_value, 0, 1023, 0, 360);
 
-  position = analogRead(A3);
-  position = map(position, 0, 1023, 0, 360);
+  analogWrite(pin_pwm__motor_output, speed_value);
 
-  speedValue = 50;
-  analogWrite(pin_pwm__motor_output, speedValue);
-
- 
- /*
-  aState = digitalRead(A1); 
-  if(aState != aLastState){     
-    if(digitalRead(A2) != aState) { 
-      counter ++;
-      angle ++;
-      if(angle >= 360){
-        angle = 0;
-      }
+  
+  tiempo2_new = micros();            // Nuevo valor de los microsegundos del reloj.
+   // Se controla el tiempo que ha pasado desde la anterior ejecución para calcular la velocidad del encoder    
+    if (contador != 0){
+      tiempo2 = tiempo2_new - tiempo2_old; // Calcula los microsegundos que han pasado.
+                // "tiempo2" debería ser positivo salvo OVERFLOW de las variables que son "unsigned long"
+                // (no se ha programado el tratamiento del OVERFLOWque se produciría cada 70horas aproximadamente)
+      vel_enc=234375*contador/tiempo2;   //Cálculo de la velocidad por el contador del encoder cada n micros
+                // N[pulsos/micros]*[1000000micros/1s]*[60s/1min]*[1vuelta/(8*32)pulsos]=N*1000000*60/(8*32)[vuelta/min]=N*234375[rpm]
+      contador=0;     // Se pone a cero el contador de pulsos incrementado por las interrupciones de los canales A y B
+      tiempo2_old=tiempo2_new;
     }
-    else{
-      counter--;
-      angle --;
-      if(angle <= 0){
-        angle = 360;
+    else{  // Poner la velocidad del encoder a cero si no llegan pulsos en 0.25 segundos
+      if ((tiempo2_new-tiempo2_old)>250000){
+        vel_enc=0;   // La interrupción no se ha activado en ese tiempo
+        tiempo2_old=tiempo2_new;
       }
+   }
 
-    }
+  if(i==10000){
+    SPrint();
+    i = 0;
   }
-  */
+  i++;
 
-
-  if(position == 0 && last_round >= 10){
-    round_counter++;
-    Serial.println("****** ");
-    Serial.print("round_counter: ");
-    Serial.println(round_counter);
-    Serial.print("encoder_counter: ");
-    Serial.println(counter);
-    Serial.println("****** ");
-  }
-
-  if (round_counter == 5 && last_round >= 10){
-    Serial.println("-----");
-    Serial.print("last_5_counter: ");
-    Serial.println(last_5_counter);
-    Serial.print("median: ");
-    Serial.println(median);
-    Serial.println("-----");
-    last_5_counter = counter;
-    median += counter;
-    median = median/2;
-    counter = 0;
-    round_counter = 0;
-    speedValue = 127;
-    analogWrite(pin_pwm__motor_output, speedValue);
-    delay(10000);
-    speedValue = 50;
-    analogWrite(pin_pwm__motor_output, speedValue);
-  }
-
-  last_round = position;
-  aLastState = aState;
 
 
   //SerialExecutionSpeed();
 }
-
 
 
 void SerialExecutionSpeed(){
@@ -135,23 +106,28 @@ void SerialExecutionSpeed(){
 }
 
 
-void A_Pin_Up(){
-  //Serial.print("A_Pin_Up");
-  a_up = true;
-  b_up = digitalRead(pin_channelB);
-  if(a_up && b_up){
-    counter++;
-  }
+void CanalA(){                // Flanco en el canal A
+//  A=!A;                     // estas dos líneas no funcionan bien ¿por qué?
+//  contador=contador-A*B;    // sería un código más óptimo que el actual
+  A=digitalRead(PIN_D2);      // Actualizar el estado correcto del pin del encoder
+  if  (A==!Ao)  contador=contador-A*B;   // pulso en sentido CCW si A=B=1 cuando cambia A
+  Ao=A;
 }
 
-void B_Pin_Up(){
-  //Serial.print("B_Pin_Up");
-  b_up = true;
-  a_up = digitalRead(pin_channelA);
-  if(a_up && b_up){
-    counter--;
-  }
+void CanalB(){                // Flanco en el canal B,
+//  B=!B;
+//  contador=contador-A*B;
+  B=digitalRead(PIN_D1); 
+  if  (B==!Bo) contador=contador+A*B;   // pulso en sentido CW si A=B=1 cuando cambia B
+  Bo=B;
 }
 
-
-
+void SPrint(){
+  Serial.print("Input Velocidad: ");
+  Serial.println(speed_value);
+  Serial.print("Velocidad: ");
+  Serial.println(vel_enc);
+  Serial.print("Position: ");
+  Serial.println(postion_value);
+  Serial.println("----------------------");
+}

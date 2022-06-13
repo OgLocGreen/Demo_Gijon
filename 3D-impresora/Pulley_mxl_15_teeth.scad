@@ -27,7 +27,7 @@ teeth = 15;
 profile = 1;		// [1:MXL, 2:40DP, 3:XL, 4:H, 5:T2.5, 6:T5, 7:T10, 8:AT5, 9:HTD_3mm, 10:HTD_5mm, 11:HTD_8mm, 12:GT2_2mm, 13:GT2_3mm, 14:GT2_5mm]
 
 // Diameter of the motor shaft (NEMA17 motor shaft exact diameter = 5)
-motor_shaft = 5.2;	
+motor_shaft = 4.5;	
 // 3mm hole diameter
 m3_dia = 3.2;		
 // Select nut type
@@ -42,11 +42,11 @@ retainer = 1;		// [0:No, 1:Yes]
 // Height of the retainer above teeth (default: 1.5)
 retainer_ht = 1.5;	
 // Should a belt retainer be added below the teeth?
-idler = 0;			// [0:No, 1:Yes]
+idler = 1;			// [0:No, 1:Yes]
 // Height of the retainer below teeth (default: 1.5)
 idler_ht = 1.5;
 // Length of toothed part of pulley (default: 12)
-pulley_t_ht = 12;	
+pulley_t_ht = 8;	
 // Height of pulley base (default: 8 - Set to same as 'Idler Ht' if you want an idler but no pulley)
 pulley_b_ht = 8;	
 // Diameter of pulley base (default: 20)
