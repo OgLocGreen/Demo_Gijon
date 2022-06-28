@@ -48,7 +48,7 @@ idler_ht = 1.5;
 // Length of toothed part of pulley (default: 12)
 pulley_t_ht = 8;	
 // Height of pulley base (default: 8 - Set to same as 'Idler Ht' if you want an idler but no pulley)
-pulley_b_ht = 8;	
+pulley_b_ht = 15;	
 // Diameter of pulley base (default: 20)
 pulley_b_dia = 20;	
 // Number of captive nuts (default: 1)
