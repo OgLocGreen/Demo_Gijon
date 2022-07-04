@@ -1,0 +1,26 @@
+Resultat:
+In dem Projekt soll eine Vorhandener Demonstator für PID-Controller nachgebaut und vereinfacht werden.
+Im erstel Teil wird der jetztigen Stand des Projektes erläutert und welche Aufgaben und Dinge erledigt wurden.
+Im zweiten Teil wird dann auf mögliche Verbesserungen für das Projekt eingegangen. 
+
+Zu Beginn wurde der vorhandenen Demonstator genau Studiert und die Schltpläne als auch die Programmierung verinnerlicht. 
+Es handelt sich um einen einfachen Aufbau  auf der Frontseite sind drei Riemenrädern welche mit Riemen Verbunden angebracht. 
+So wie einer Bremese, einem Display (bzw. einem Voltmeter) und einem Poti.
+Die elektronik beinhaltet einen DC-Motor mit Encoder um die Geschwindigkeit auszulesen dazu gibt es noch einen ensprechenden Motor-Treiber, 
+Zwei Potis einer als Input dieser gibt die Soll-Position oder Soll-Geschwindigkeit an und der andere Poti als Output und Feedback.
+Die Steuerung bzw. der PID-Controller wird mit einem einfachen Arudino Mico umgesetzt, 
+welcher auch die Geschwindigkeit als PWM signal an den Motor-Treiber weiter gibt. 
+Die gleichen Bauteile sind auch in dem neu Entwickelten Demonstator vorbaut nur, dass hier zwei Zahnräder verwendet werden.
+Es gibt zwei Ausführungen 1 Version mit Zahnrädern und eine Version mit Rimen und Rimenscheiben.
+Beide Funktionieren eiwandfrei und wurden per 3D-Druck hergestellt. Zu Konstruktion wurden 3D-Model erstellt.
+Für die Elektronik wurde eine Schltplan mit EAGLE angefertigt. Auch die Software wurde angepasst.
+
+Ausblick:
+Bisher wurde die Zahnräder nur auf den Motorschaft aufgesteckt. Eine Verbesserung wäre es die Zahnräder zu lagern und eine Halterung zu entwickeln. 
+Da damit die Seitlichen kräfte besser aufgenommen werden können und das Laufverhalten verbessert werden kann. 
+Auch die größe bzw. das Verhältniss kann noch auf verändert werden falls andere Geschwindigkeiten für das Demonstrieren der PID-Vorgänge verbessert werden sollen.
+Zu dem muss noch eine Bremse Konstruiert werden, welche das Output-Rad abbremst. Eine erste Skizze und 3D-Model wurden erstellt aber nicht Gedruckt und Umgesetzt. 
+Hier können erneut Probleme mit den Seitlichenkräften auftauchen.
+Die Elektronik ist momentan nur auf einer Steckplatine und muss noch auf eine Festeplatine übertragen und verlötet werden. 
+Diese Platine wird aber extern hergestellt und war zum Zeitpunkt des Praktiums noch nicht Verfügbar.
+Zusammenfassend gab es aber keine größerenen Probleme mit dem Ersten Prototypen und könnte so einfach in mehrfacher Version gebaut werden.

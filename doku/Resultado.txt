@@ -1,0 +1,26 @@
+Resultado:
+En el proyecto se va a reconstruir y simplificar un demostrador existente de controladores PID.
+En la primera parte se explica el estado actual del proyecto y qué tareas y cosas se han hecho.
+En la segunda parte se discuten las posibles mejoras del proyecto. 
+
+Al principio, se estudió detalladamente el demostrador existente y se interiorizaron tanto los esquemas como la programación. 
+Se trata de una construcción sencilla con tres ruedas de cinta conectadas con correas en la parte delantera. 
+También hay un freno, una pantalla (o voltímetro) y un potenciómetro.
+La electrónica incluye un motor de corriente continua con codificador para leer la velocidad, además de un controlador de motor correspondiente, 
+Dos potenciómetros, uno como entrada que indica la posición objetivo o la velocidad objetivo y el otro potenciómetro como salida y retroalimentación.
+El control o el controlador PID se implementa con un simple Arudino Mico, 
+que también envía la velocidad como una señal PWM al controlador del motor. 
+Los mismos componentes se utilizan también en el demostrador de nuevo desarrollo, con la diferencia de que aquí se utilizan dos ruedas dentadas.
+Hay dos versiones: una versión con ruedas dentadas y otra con llantas y discos de llanta.
+Ambas funcionan sin paredes de huevo y fueron producidas mediante impresión 3D. Se crearon modelos 3D para la construcción.
+Para la electrónica se hizo un esquema con EAGLE. También se adaptó el software.
+
+Perspectivas:
+Hasta ahora, las ruedas dentadas sólo estaban unidas al eje del motor. Una mejora sería montar los engranajes y desarrollar un soporte. 
+Esto permitiría absorber mejor las fuerzas laterales y mejorar el comportamiento en carrera. 
+También se puede cambiar el tamaño o la relación si se quieren mejorar otras velocidades para demostrar los procesos PID.
+Además, hay que construir un freno para frenar la rueda de salida. Se ha realizado un primer boceto y un modelo en 3D, pero no se ha impreso ni aplicado. 
+Aquí también pueden surgir problemas con las fuerzas laterales.
+Actualmente, la electrónica sólo está en una placa enchufable y aún hay que transferirla y soldarla a una placa sólida. 
+Sin embargo, esta placa se fabrica externamente y aún no estaba disponible en el momento de la formación práctica.
+En resumen, el primer prototipo no presentaba grandes problemas y podía construirse fácilmente en varias versiones.
